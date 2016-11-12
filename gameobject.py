@@ -9,9 +9,9 @@ class GameObject(pygame.sprite.Sprite):
         self.y = y
         self.width = w * self.scale
         self.height = h * self.scale
+        self.orientation = 1
         self.draw_rect = pygame.rect.Rect(0, 0, self.width, self.height)
         if surface:
-            print('from surf')
             self.sheet = surface
         else:
             self.sheet = pygame.image.load(imgname).convert()
@@ -25,6 +25,8 @@ class GameObject(pygame.sprite.Sprite):
         self.image = pygame.Surface(self.draw_rect.size).convert()
         self.image.blit(self.sheet, (0, 0), self.draw_rect)
         self.image.set_colorkey(self.image.get_at((0, 0)), pygame.RLEACCEL)
+        if self.orientation == -1:
+            self.image = pygame.transform.flip(self.image, True, False)
 
     def set_frame(self, frameno):
         self.draw_rect = pygame.Rect(frameno * self.width, 0, self.width, self.height)
