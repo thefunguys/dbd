@@ -8,6 +8,7 @@ Created on Sat Nov 12 11:08:27 2016
 import pygame
 from random import randint
 import numpy as np
+import os,sys
 
  
 # --- Globals ---
@@ -15,6 +16,7 @@ import numpy as np
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255,0,0)
+GREEN = (0,255,0)
  
 # Set the width and height of each snake segment
 segment_width = 15
@@ -25,8 +27,9 @@ neuro_height = 10
 segment_margin = 3
  
 # Set initial speed
-y_change = (segment_width + segment_margin)
-x_change = 0
+x_change = (segment_width + segment_margin)
+y_change = 0
+
  
  
 class Segment(pygame.sprite.Sprite):
@@ -46,13 +49,14 @@ class Segment(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         
-def collision(snake_segments):
+def collision(snake_segments,score):
     for ii in range(len(snake_segments)-1,1,-1):
         if snake_segments[0].rect.x == snake_segments[ii].rect.x:
             if snake_segments[0].rect.y == snake_segments[ii].rect.y:
                 for jj in range(ii,len(snake_segments)):
                     temp = snake_segments.pop()
                     temp.image.fill(BLACK)
+                    score.reset()
     for jj in range(len(snake_segments)-1):
         if snake_segments[jj].rect.x > 790:
             snake_segments[jj].rect.x = snake_segments[jj].rect.x % 790
@@ -64,7 +68,31 @@ def collision(snake_segments):
             snake_segments[jj].rect.y = snake_segments[jj].rect.y + 600
     
    
+class Score(pygame.sprite.Sprite):
+    """sprite for score"""
+
+    def __init__(self,xy):
+        pygame.sprite.Sprite.__init__(self)
+        self.xy = xy
+        self.font = pygame.font.Sysfont('monospace',50)
+        self.color = (255,165,0)
+        self.score = 0
+        self.reRender()
+        
     
+    def add(self,points):
+        self.score += points
+        self.reRender()
+        
+    def reset(self):
+        self.score = 0
+        self.reRender()
+        
+    def reRender(self):
+        self.image = self.font.render("%d" %(self.score), True, self.color)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.xy
+        
             
             
                 
@@ -86,7 +114,7 @@ class neuro(pygame.sprite.Sprite):
         self.rect.y = randint(30,570)
         pass
         
-def collision_neuro(neuro,snake_segments):
+def collision_neuro(neuro,snake_segments,score):
     if np.abs(snake_segments[0].rect.x - neuro.rect.x) < 10:
         print('hello')
         if np.abs(snake_segments[0].rect.y - neuro.rect.y) < 10:
@@ -97,6 +125,9 @@ def collision_neuro(neuro,snake_segments):
             segment = Segment(x,y)
             snake_segments.append(segment)
             allspriteslist.add(segment)
+            score.add(1)
+            
+
             
  
 # Call this function so the Pygame library can initialize itself
@@ -104,7 +135,8 @@ pygame.init()
  
 # Create an 800x600 sized screen
 screen = pygame.display.set_mode([800, 600])
- 
+
+
 # Set the title of the window
 pygame.display.set_caption('Dylans Bad Day')
  
@@ -131,6 +163,8 @@ done = False
 while not done:
  
     for event in pygame.event.get():
+        speed = 1
+        score = Score((100,30))
         
  
         # Set the speed based on the key pressed
@@ -138,29 +172,29 @@ while not done:
         # segment, plus the margin.
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                x_change = (segment_width + segment_margin) * -1
+                x_change = (speed * segment_width + segment_margin) * -1
                 y_change = 0
                 if abs(snake_segments[1].rect.x - snake_segments[0].rect.x + x_change) < 3:
                     x_change = 0
             if event.key == pygame.K_RIGHT:
-                x_change = (segment_width + segment_margin)
+                x_change = (speed * segment_width + segment_margin)
                 y_change = 0
                 if abs(snake_segments[1].rect.x - snake_segments[0].rect.x + x_change) < 3:
                     x_change = 0
             if event.key == pygame.K_UP:
                 x_change = 0
-                y_change = (segment_height + segment_margin) * -1
+                y_change = (speed * segment_height + segment_margin) * -1
                 if abs(snake_segments[1].rect.y - snake_segments[0].rect.y + y_change) < 3:
                     y_change = 0
             if event.key == pygame.K_DOWN:
                 x_change = 0
-                y_change = (segment_height + segment_margin)
+                y_change = (speed * segment_height + segment_margin)
                 if abs(snake_segments[1].rect.y - snake_segments[0].rect.y + y_change) < 3:
                     y_change = 0
             if event.key == pygame.K_ESCAPE:
                 done = True
-    collision(snake_segments)
-    collision_neuro(neuro,snake_segments)
+    collision(snake_segments,score)
+    collision_neuro(neuro,snake_segments,score)
  
     # Get rid of last segment of the snake
     # .pop() command removes last item in list
@@ -175,6 +209,9 @@ while not done:
     # Insert new segment into the list
     snake_segments.insert(0, segment)
     allspriteslist.add(segment)
+    allspriteslist.add(score)
+    
+    
  
     # -- Draw everything
     # Clear screen
