@@ -24,11 +24,11 @@ class GameObject(pygame.sprite.Sprite):
     def inc_frame(self):
         self.draw_rect = self.draw_rect.move(self.width, 0)
         if self.draw_rect.x >= self.sheet.get_width():
-            self.draw_rect.x = 0
+            self.draw_rect.x -= self.width
         self.set_image()
 
     def dec_frame(self):
         self.draw_rect = self.draw_rect.move(-self.width, 0)
         if self.draw_rect.x < 0:
-            self.draw_rect.x = self.sheet.get_width() - self.width 
+            self.draw_rect = self.draw_rect.move(self.width, 0)
         self.set_image()
