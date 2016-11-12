@@ -15,6 +15,7 @@ class GameObject(pygame.sprite.Sprite):
         print(self.name)
         print(self.sheet.get_width())
         self.set_image()
+        self.frame_elapsed = 0.0
 
     def set_image(self):
         self.image = pygame.Surface(self.draw_rect.size).convert()
@@ -32,3 +33,14 @@ class GameObject(pygame.sprite.Sprite):
         if self.draw_rect.x < 0:
             self.draw_rect = self.draw_rect.move(self.width, 0)
         self.set_image()
+
+    def update(self, dt):
+        self.frame_elapsed += dt
+        if self.frame_elapsed < 300:
+            return
+        self.frame_elapsed = 0.0
+        self.draw_rect = self.draw_rect.move(self.width, 0)
+        if self.draw_rect.x >= self.sheet.get_width():
+            self.draw_rect.x = 0
+        self.set_image()
+        
