@@ -2,7 +2,7 @@ import pygame
 
 pygame.init()
 update_rects = []
-screen = pygame.display.set_mode((640, 480), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE)
+screen = pygame.display.set_mode((640, 480), pygame.DOUBLEBUF | pygame.HWSURFACE)
 
 background = pygame.Surface(screen.get_size()).convert()
 background.fill((20, 20, 20))
@@ -13,19 +13,25 @@ font = pygame.font.Font('assets/dejavu.ttf', 20)
 print(font.size('hello'))
 
 
-def draw(go):
+def draw(go, surface=screen):
     update_rects.append(pygame.Rect(go.x, go.y, go.width, go.height))
-    screen.blit(go.image, (go.x, go.y))
+    surface.blit(go.image, (go.x, go.y))
+
+def draw_surf(surface, loc, target=screen):
+    update_rects.append(surface.get_rect(topleft=loc))
+    target.blit(surface, loc)
 
 def update():
     pygame.display.update(update_rects)
     del update_rects[:]
 
-def draw_bg():
-    screen.blit(background, (0, 0))
+def draw_bg(surface=screen, bg_color=(20, 20, 20)):
+    if bg_color != background.get_at((0, 0)):
+        background.fill(bg_color)
+    surface.blit(background, (0, 0))
 
-def write(text):
-    drawText(screen, text, (0, 0, 0), pygame.Rect(80, 370, 480, 100), font)
+def write(text, surface=screen):
+    drawText(surface, text, (0, 0, 0), pygame.Rect(80, 370, 480, 100), font)
 
 def drawText(surface, text, color, rect, font, aa=False, bkg=None):
     rect = pygame.Rect(rect)
