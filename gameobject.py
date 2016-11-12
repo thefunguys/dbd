@@ -1,10 +1,10 @@
 import pygame
 
 class GameObject(pygame.sprite.Sprite):
-    def __init__(self, name, imgname, x, y, w=32, h=32, surface=None):
+    def __init__(self, name, imgname, x, y, w=32, h=32, scale=4, surface=None):
         pygame.sprite.Sprite.__init__(self)
         self.name = name
-        self.scale = 4
+        self.scale = scale
         self.x = x
         self.y = y
         self.width = w * self.scale

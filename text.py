@@ -9,7 +9,7 @@ class Text(object):
         self.text = text
         self.type = type
 
-texts = [Text('', USER)]
+texts = [Text('you awake...', USER)]
 curtext = 0
 
 def add_text(text, type=USER):
@@ -20,7 +20,7 @@ def process_event(type):
     if texts[curtext].type == type and len(texts) > curtext + 1:
         curtext += 1
 
-def draw_text():
+def draw_text(texts):
     draw.write(texts[curtext].text)
 
 def user_text():

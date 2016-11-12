@@ -39,6 +39,8 @@ class Scene:
             progress = 0.99
         if self.actor:
             pframe = int(progress * (self.actor.sheet.get_width() / self.actor.width))
+            if pframe < 0:
+                pframe = 0
             self.actor.set_frame(pframe)
             if self.actor.name == 'walker':
-                self.actor.x = 570 - 200 * progress
+                self.actor.x = 530 - 160 * progress

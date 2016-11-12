@@ -57,7 +57,7 @@ while running:
     prog += dt / 10000.0
     if prog > 1.1:
         prog = 0
-    prog = platformer.player.x / 300.0
+    prog = platformer.player.x / 280.0
     current_scene().set_progress(prog)
 
     current_scene().update(dt)
@@ -66,5 +66,5 @@ while running:
     platformer.platformscene.draw()
     draw.draw_surf(platformer.platformscene.rendertarget, (0, 64))
     draw.draw(textbox)
-    text.draw_text()
+    text.draw_text(text.texts)
     draw.update()
