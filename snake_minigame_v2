@@ -60,7 +60,7 @@ def collision(snake_segments):
             snake_segments[jj].rect.y = snake_segments[jj].rect.y % 590
         if snake_segments[jj].rect.x < 10:
             snake_segments[jj].rect.x = snake_segments[jj].rect.x + 800
-        if snake_segments[jj].rect.x < 10:
+        if snake_segments[jj].rect.y < 10:
             snake_segments[jj].rect.y = snake_segments[jj].rect.y + 600
     
    
