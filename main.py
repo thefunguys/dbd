@@ -57,6 +57,7 @@ while running:
     prog += dt / 10000.0
     if prog > 1.1:
         prog = 0
+    prog = platformer.player.x / 300.0
     current_scene().set_progress(prog)
 
     current_scene().update(dt)
