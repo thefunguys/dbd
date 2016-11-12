@@ -53,6 +53,15 @@ def collision(snake_segments):
                 for jj in range(ii,len(snake_segments)):
                     temp = snake_segments.pop()
                     temp. image.fill(BLACK)
+    for jj in range(len(snake_segments)-1):
+        if snake_segments[jj].rect.x > 790:
+            snake_segments[jj].rect.x = snake_segments[jj].rect.x % 790
+        if snake_segments[jj].rect.y > 590:
+            snake_segments[jj].rect.y = snake_segments[jj].rect.y % 590
+        if snake_segments[jj].rect.x < 10:
+            snake_segments[jj].rect.x = snake_segments[jj].rect.x + 800
+        if snake_segments[jj].rect.x < 10:
+            snake_segments[jj].rect.y = snake_segments[jj].rect.y % 600
     
         
     
@@ -131,15 +140,23 @@ while not done:
             if event.key == pygame.K_LEFT:
                 x_change = (segment_width + segment_margin) * -1
                 y_change = 0
+                if snake_segments[1].rect.x == snake_segments[0].rect.x + x_change:
+                    x_change = 0
             if event.key == pygame.K_RIGHT:
                 x_change = (segment_width + segment_margin)
                 y_change = 0
+                if snake_segments[1].rect.x == snake_segments[0].rect.x + x_change:
+                    x_change = 0
             if event.key == pygame.K_UP:
                 x_change = 0
                 y_change = (segment_height + segment_margin) * -1
+                if snake_segments[1].rect.y == snake_segments[0].rect.y + y_change:
+                    y_change = 0
             if event.key == pygame.K_DOWN:
                 x_change = 0
                 y_change = (segment_height + segment_margin)
+                if snake_segments[1].rect.y == snake_segments[0].rect.y + y_change:
+                    y_change = 0
             if event.key == pygame.K_ESCAPE:
                 done = True
     collision(snake_segments)
