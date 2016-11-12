@@ -25,8 +25,8 @@ neuro_height = 10
 segment_margin = 3
  
 # Set initial speed
-x_change = segment_width + segment_margin
-y_change = 0
+y_change = (segment_width + segment_margin)
+x_change = 0
  
  
 class Segment(pygame.sprite.Sprite):
@@ -52,16 +52,16 @@ def collision(snake_segments):
             if snake_segments[0].rect.y == snake_segments[ii].rect.y:
                 for jj in range(ii,len(snake_segments)):
                     temp = snake_segments.pop()
-                    temp. image.fill(BLACK)
+                    temp.image.fill(BLACK)
     for jj in range(len(snake_segments)-1):
         if snake_segments[jj].rect.x > 790:
             snake_segments[jj].rect.x = snake_segments[jj].rect.x % 790
         if snake_segments[jj].rect.y > 590:
-            snake_segments[jj].rect.y = snake_segments[jj].rect.y + 600
+            snake_segments[jj].rect.y = snake_segments[jj].rect.y % 590
         if snake_segments[jj].rect.x < 10:
             snake_segments[jj].rect.x = snake_segments[jj].rect.x + 800
         if snake_segments[jj].rect.x < 10:
-            snake_segments[jj].rect.y = snake_segments[jj].rect.y % 590
+            snake_segments[jj].rect.y = snake_segments[jj].rect.y + 600
     
    
     
