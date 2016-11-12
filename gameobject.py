@@ -1,14 +1,14 @@
 import pygame
 
 class GameObject(pygame.sprite.Sprite):
-    def __init__(self, name, imgname, x, y):
+    def __init__(self, name, imgname, x, y, w=32, h=32):
         pygame.sprite.Sprite.__init__(self)
         self.name = name
         self.scale = 4
         self.x = x
         self.y = y
-        self.width = 32 * self.scale
-        self.height = 32 * self.scale
+        self.width = w * self.scale
+        self.height = h * self.scale
         self.draw_rect = pygame.rect.Rect(0, 0, self.width, self.height)
         self.sheet = pygame.image.load(imgname)
         self.sheet = pygame.transform.scale(self.sheet, (self.sheet.get_width() * self.scale, self.sheet.get_height() * self.scale))
