@@ -74,7 +74,7 @@ class Score(pygame.sprite.Sprite):
     def __init__(self,xy):
         pygame.sprite.Sprite.__init__(self)
         self.xy = xy
-        self.font = pygame.font.Sysfont('monospace',50)
+        self.font = pygame.font.Font(None,50)
         self.color = (255,165,0)
         self.score = 0
         self.reRender()
