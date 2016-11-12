@@ -15,7 +15,6 @@ class GameObject(pygame.sprite.Sprite):
             self.sheet = surface
         else:
             self.sheet = pygame.image.load(imgname).convert()
-        print(self.sheet)
         self.sheet = pygame.transform.scale(self.sheet, (self.sheet.get_width() * self.scale, self.sheet.get_height() * self.scale))
         print(self.name + ' loaded')
         self.set_image()

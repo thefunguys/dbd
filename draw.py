@@ -5,7 +5,8 @@ update_rects = []
 screen = pygame.display.set_mode((640, 480), pygame.DOUBLEBUF | pygame.HWSURFACE)
 
 background = pygame.Surface(screen.get_size()).convert()
-background.fill((20, 20, 20))
+bg_color = (80, 100, 150)
+background.fill(bg_color)
 screen.blit(background, (0, 0))
 pygame.display.update()
 
@@ -25,7 +26,7 @@ def update():
     pygame.display.update(update_rects)
     del update_rects[:]
 
-def draw_bg(surface=screen, bg_color=(20, 20, 20)):
+def draw_bg(surface=screen, bg_color=bg_color):
     if bg_color != background.get_at((0, 0)):
         background.fill(bg_color)
     surface.blit(background, (0, 0))

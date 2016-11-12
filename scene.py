@@ -5,7 +5,7 @@ class Scene:
         self.gameobjects = []
         self.actor = None
         self.rendertarget = rendertarget
-        self.bg_color = (20, 20, 20)
+        self.bg_color = draw.bg_color
 
     def add(self, gameobject):
         self.gameobjects.append(gameobject)
@@ -33,3 +33,12 @@ class Scene:
     def devance(self):
         if self.actor:
             self.actor.dec_frame()
+
+    def set_progress(self, progress):
+        if progress >= 1.0:
+            progress = 0.99
+        if self.actor:
+            pframe = int(progress * (self.actor.sheet.get_width() / self.actor.width))
+            self.actor.set_frame(pframe)
+            if self.actor.name == 'walker':
+                self.actor.x = 570 - 200 * progress
