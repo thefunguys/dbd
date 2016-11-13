@@ -1,4 +1,4 @@
-import pygame, gameobject, scene
+import pygame, gameobject, scene, threading
 from pygame.locals import *
 
 enemies = []
@@ -9,6 +9,14 @@ def halfrect(rect):
     rect.y += 0.25 * rect.h
     rect.h /= 2
     return rect
+
+def set_interval(func, sec):
+    def func_wrapper():
+        set_interval(func, sec)
+        func()
+    t = threading.Timer(sec, func_wrapper)
+    t.start()
+    return t
 
 class PlatformPlayer(gameobject.GameObject):
     def __init__(self):
@@ -57,13 +65,13 @@ class PlatformPlayer(gameobject.GameObject):
             enemyrect = enemy.draw_rect.move((enemy.x, enemy.y))
             enemyrect = halfrect(enemyrect)
             if prect.colliderect(enemyrect):
-                print('collide! with ' + enemy.name)
                 self.x -= 50
                 if self.x < -45:
                     self.x = -45
 
         self.x += self.velocity[0] * dt / 1000.0
         self.y += self.velocity[1] * dt / 1000.0
+
 
 class PlatformEnemy(gameobject.GameObject):
     def __init__(self, name, x=300, y=220):
@@ -74,13 +82,14 @@ class PlatformEnemy(gameobject.GameObject):
         self.x += self.velocity[0] * dt / 1000.0
 
 
-def angst(x=300):
-   angsto = PlatformEnemy('angst', x)
-   platformscene.add(angsto)
-   enemies.append(angsto)
+def angst(x=550):
+    angsto = PlatformEnemy('angst', x)
+    platformscene.add(angsto)
+    enemies.append(angsto)
+
 
 def fear(x=300):
-    fearo = PlatformEnemy('fear', x, 166)
+    fearo = PlatformEnemy('fear', x, 152)
     platformscene.add(fearo)
     enemies.append(fearo)
 
@@ -90,6 +99,12 @@ player = PlatformPlayer()
 
 platformscene = scene.Scene(disp)
 platformscene.add(player)
-angst(500)
-fear()
-platformscene.bg_color = (100, 120, 200)
+
+
+def start():
+    for i in range(20):
+        angst(450 + 300 * i)
+    for i in range(20):
+        fear(300 + 300 * i)
+
+platformscene.bg_color = (200, 200, 200)
