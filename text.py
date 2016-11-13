@@ -9,7 +9,7 @@ class Text(object):
         self.text = text
         self.type = type
 
-texts = [Text('you awake...', USER)]
+texts = []
 curtext = 0
 
 def add_text(text, type=USER):
@@ -17,11 +17,16 @@ def add_text(text, type=USER):
 
 def process_event(type):
     global curtext
+    rettext = texts[curtext]
     if texts[curtext].type == type and len(texts) > curtext + 1:
         curtext += 1
+        return rettext
+    return False
+    
 
 def draw_text(texts):
-    draw.write(texts[curtext].text)
+    if curtext < len(texts):
+        draw.write(texts[curtext].text)
 
 def user_text():
     pygame.event.post(pygame.event.Event(events.ADVANCETEXT, advtype=USER))

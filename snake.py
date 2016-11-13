@@ -62,13 +62,13 @@ def collision(snake_segments,score):
                     score.reset()
     for jj in range(len(snake_segments)-1):
         if snake_segments[jj].rect.x > game_width - 10:
-            snake_segments[jj].rect.x = snake_segments[jj].rect.x % 790
+            snake_segments[jj].rect.x = snake_segments[jj].rect.x % game_width - 10
         if snake_segments[jj].rect.y > game_height - 10:
-            snake_segments[jj].rect.y = snake_segments[jj].rect.y % 590
+            snake_segments[jj].rect.y = snake_segments[jj].rect.y % game_height - 10
         if snake_segments[jj].rect.x < 10:
-            snake_segments[jj].rect.x = snake_segments[jj].rect.x + 800
+            snake_segments[jj].rect.x = snake_segments[jj].rect.x + game_width
         if snake_segments[jj].rect.y < 10:
-            snake_segments[jj].rect.y = snake_segments[jj].rect.y + 600
+            snake_segments[jj].rect.y = snake_segments[jj].rect.y + game_height
     
    
 class Score(pygame.sprite.Sprite):
@@ -168,46 +168,45 @@ allspriteslist.add(score)
 clock = pygame.time.Clock()
 done = False
  
-def update(dt): 
+def update(dt, pressed): 
     global x_change, y_change, direction, done
-    for event in pygame.event.get():
-        speed = 1
-        
- 
-        # Set the speed based on the key pressed
-        # We want the speed to be enough that we move a full
-        # segment, plus the margin.
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                if direction != 0:
-                    x_change = (speed * segment_width + segment_margin) * -1
-                    direction = 2
-                else:
-                    x_change = (speed * segment_width + segment_margin)
-                y_change = 0
-            if event.key == pygame.K_RIGHT:
-                if direction != 2:
-                    x_change = (speed * segment_width + segment_margin)
-                    direction = 0
-                else:
-                    x_change = (speed * segment_width + segment_margin) * -1
-                y_change = 0
-            if event.key == pygame.K_UP:
-                x_change = 0
-                if direction != 1:
-                    y_change = (speed * segment_height + segment_margin) * -1
-                    direction = 3
-                else:
-                    y_change = (speed * segment_width + segment_margin)
-            if event.key == pygame.K_DOWN:
-                x_change = 0
-                if direction != 3:
-                    y_change = (speed * segment_height + segment_margin)
-                    direction = 1
-                else:
-                    y_change = (speed * segment_width + segment_margin) * -1
-            if event.key == pygame.K_ESCAPE:
-                done = True
+    speed = 1
+
+
+    # Set the speed based on the key pressed
+    # We want the speed to be enough that we move a full
+    # segment, plus the margin.
+    keys = pressed
+    if keys[pygame.K_LEFT]:
+        if direction != 0:
+            x_change = (speed * segment_width + segment_margin) * -1
+            direction = 2
+        else:
+            x_change = (speed * segment_width + segment_margin)
+        y_change = 0
+    if keys[pygame.K_RIGHT]:
+        if direction != 2:
+            x_change = (speed * segment_width + segment_margin)
+            direction = 0
+        else:
+            x_change = (speed * segment_width + segment_margin) * -1
+        y_change = 0
+    if keys[pygame.K_UP]:
+        x_change = 0
+        if direction != 1:
+            y_change = (speed * segment_height + segment_margin) * -1
+            direction = 3
+        else:
+            y_change = (speed * segment_width + segment_margin)
+    if keys[pygame.K_DOWN]:
+        x_change = 0
+        if direction != 3:
+            y_change = (speed * segment_height + segment_margin)
+            direction = 1
+        else:
+            y_change = (speed * segment_width + segment_margin) * -1
+    if keys[pygame.K_ESCAPE]:
+        done = True
     collision(snake_segments,score)
     collision_neuro(neuro,snake_segments,score)
  
@@ -217,8 +216,6 @@ def update(dt):
     allspriteslist.remove(old_segment)
  
     # Figure out where new segment will be
-    x_change *= dt / 1000.0
-    y_change *= dt / 1000.0
     x = snake_segments[0].rect.x + x_change 
     y = snake_segments[0].rect.y + y_change 
     segment = Segment(x, y)
@@ -237,12 +234,12 @@ def update(dt):
  
     allspriteslist.draw(screen)
  
+    clock.tick(5)
     # Flip screen
     if main:
         pygame.display.flip()
 
         # Pause
-        clock.tick(5)
  
 
 if main:

@@ -1,4 +1,4 @@
-import pygame, draw, gameobject, scene, events, text, walker, platformer
+import pygame, draw, gameobject, scene, events, text, walker, platformer, snake, threading
 from pygame.locals import *
 
 pygame.init()
@@ -22,63 +22,95 @@ essayscene = scene.Scene()
 essayscene.add_actor(essay)
 scenes = [bedscene, lunchscene, essayscene]
 curscene = 0
-gamevars = {'state': 'begin'}
+gamevars = {'state': 1}
+
+
 def state(s=None):
     if s:
         gamevars['state'] = s
     return gamevars['state']
-text.add_text('you are getting very sleepy right now because you are in such a comfy bed', text.USER)
-text.add_text('go to sleep')
+
+
+def next_state():
+    state(state() + 1)
+
+text.add_text('Good morning, Dylan!', text.USER)
+text.add_text('The sun is shining, birds are singing, and it\'s time to get out of bed!', text.EVENT)
+text.add_text('Oh no! Looks like you\'re having some trouble there.  That\'s okay.  It\'s hard to get out of bed sometimes.')
+text.add_text("Especially if you're feeling down.  Sometimes we have to battle our own brains to get through the day.")
+text.add_text("Looks like you're a little low on dopamine.  Collect 20 dopamine points to get out of bed and start your day!", text.EVENT)
+
 prog = 0.0
 
 def next_scene():
     global curscene
     curscene += 1
+    state(1)
     if curscene >= len(scenes):
         curscene = 0
     if scenes[curscene] == lunchscene:
-        state('begin lunch')
         text.texts = []
         text.curtext = 0
         text.add_text('Heather calls you to join for lunch', text.USER)
         text.add_text('get pass anxiety and fear to make it to the table', text.EVENT)
 
+
 def current_scene():
     return scenes[curscene]
 
+prog = 0.0
+def zero_prog():
+    global prog
+    prog = 0.0
+    text.event_text()
+
 running = True
 while running:
+    pressed = list(pygame.key.get_pressed())
     for event in pygame.event.get():
         if event.type == QUIT or pygame.key.get_pressed()[K_ESCAPE]:
             running = False
         if event.type == KEYDOWN:
-            if pygame.key.get_pressed()[K_j]:
-                next_scene()
-                draw.draw_bg()
-                pygame.display.update()
-            if pygame.key.get_pressed()[K_k]:
-                curscene.devance()
-            if pygame.key.get_pressed()[K_SPACE]:
+            pressed[event.key] = True
+            if event.key == K_SPACE:
                 text.user_text()
-                if state() == 'begin lunch':
-                    platformer.start()
-                    state('lunching')
 
         elif event.type == events.ADVANCETEXT:
-            text.process_event(event.advtype)
+            processed = text.process_event(event.advtype)
+            if processed:
+                print(state())
+                if state() == 1 and current_scene() == bedscene:
+                    print('waiting')
+                    prog = 0.6
+                    threading.Timer(3.0, zero_prog).start()
+                elif state() == 1 and current_scene() == lunchscene:
+                    platformer.start()
+                next_state()
 
+
+    if pressed[K_j]:
+        next_scene()
+        draw.draw_bg()
+        pygame.display.update()
+    if pressed[K_k]:
+        curscene.devance()
     dt = clock.tick(60)
-    prog += dt / 10000.0
-    if prog > 1.1:
-        prog = 0
 
     current_scene().update(dt)
     current_scene().draw()
-    if state() == 'lunching':
-        prog = platformer.player.x / 280.0
+    if state() == 2 and current_scene() == lunchscene:
+        prog = (platformer.player.x + 45) / 280.0
+        if prog > 1.0:
+            next_scene()
         platformer.platformscene.update(dt)
         platformer.platformscene.draw()
-        draw.draw_surf(platformer.platformscene.rendertarget, (0, 64))
+        draw.draw_surf(platformer.platformscene.rendertarget, (10, 64))
+    if state() == 5 and current_scene() == bedscene:
+        snake.update(dt, pressed)
+        draw.draw_surf(snake.screen, (10, 64))
+        prog = snake.score.score / 20.0
+        if prog >= 1.0 or pressed[K_d]:
+            next_scene()
     current_scene().set_progress(prog)
     draw.draw(textbox)
     text.draw_text(text.texts)
