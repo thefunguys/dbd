@@ -44,7 +44,7 @@ class Word(pygame.sprite.Sprite):
         self.x = randint(20,game_width - 20)
         self.y = 15
         self.font = pygame.font.Font(None,25)
-        self.word = word_list[random.randint(0,len(word_list)-1)]
+        self.word = word_list[randint(0,len(word_list)-1)]
         self.color = GREEN
         self.reRender()
         
