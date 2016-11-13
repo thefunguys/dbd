@@ -78,8 +78,7 @@ class Score(pygame.sprite.Sprite):
         self.font = pygame.font.Font(None,50)
         self.color = (255,165,0)
         self.score = 0
-        self.reRender()
-        
+        self.reRender()       
     
     def add(self,points):
         self.score += points
@@ -92,7 +91,8 @@ class Score(pygame.sprite.Sprite):
     def reRender(self):
         self.image = self.font.render("%d" %(self.score), True, self.color)
         self.rect = self.image.get_rect()
-        self.rect.center = self.xy
+        #self.background.blit(self.rect,1,(255,0,0))
+        self.rect.center = xy
         
             
             
