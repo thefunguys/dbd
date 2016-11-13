@@ -28,9 +28,11 @@ class Ship(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         
-        self.image = pygame.image.load('heart.png')
-        self.rect = self.image.get_rect()
+        #self.image = pygame.image.load('heart.png')
+        self.image = pygame.Surface([20,25])
+        self.image.fill(WHITE)
         
+        self.rect = self.image.get_rect()
         self.rect.x = mid_x
         self.rect.y = game_height - 20
         
@@ -139,7 +141,9 @@ while not done:
             if event.key == pygame.K_ESCAPE:
                 done = True
         collision_ship(ship)
-        collision_word(bullet,word)
+        for sprite in allspriteslist:
+            if type(sprite) == Bullet:        
+                collision_word(bullet,word)
         
         screen.fill(BLACK)
         allspriteslist.draw(screen)
