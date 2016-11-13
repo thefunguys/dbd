@@ -22,6 +22,11 @@ essayscene = scene.Scene()
 essayscene.add_actor(essay)
 scenes = [bedscene, lunchscene, essayscene]
 curscene = 0
+gamevars = {'state': 'begin'}
+def state(s=None):
+    if s:
+        gamevars['state'] = s
+    return gamevars['state']
 text.add_text('you are getting very sleepy right now because you are in such a comfy bed', text.USER)
 text.add_text('go to sleep')
 prog = 0.0
@@ -32,7 +37,11 @@ def next_scene():
     if curscene >= len(scenes):
         curscene = 0
     if scenes[curscene] == lunchscene:
-        platformer.start()
+        state('begin lunch')
+        text.texts = []
+        text.curtext = 0
+        text.add_text('Heather calls you to join for lunch', text.USER)
+        text.add_text('get pass anxiety and fear to make it to the table', text.EVENT)
 
 def current_scene():
     return scenes[curscene]
@@ -51,6 +60,9 @@ while running:
                 curscene.devance()
             if pygame.key.get_pressed()[K_SPACE]:
                 text.user_text()
+                if state() == 'begin lunch':
+                    platformer.start()
+                    state('lunching')
 
         elif event.type == events.ADVANCETEXT:
             text.process_event(event.advtype)
@@ -62,7 +74,7 @@ while running:
 
     current_scene().update(dt)
     current_scene().draw()
-    if current_scene() == lunchscene:
+    if state() == 'lunching':
         prog = platformer.player.x / 280.0
         platformer.platformscene.update(dt)
         platformer.platformscene.draw()
