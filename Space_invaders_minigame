@@ -58,8 +58,8 @@ class Bullet(pygame.sprite.Sprite):
     
     def __init__(self,Ship):
         super().__init__()
-        self.x = Ship.x
-        self.y = Ship.y
+        self.x = Ship.rect.x
+        self.y = Ship.rect.y
         
         self.image = pygame.Surface([5,15])
         self.image.fill(RED)
