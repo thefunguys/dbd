@@ -16,9 +16,9 @@ WHITE = (255, 255, 255)
 RED = (255,0,0)
 GREEN = (0,255,0)
 word_list = ['the','and','red','green','yellow','stop','go','slow']
-game_height = 440
-game_width = 320
-mid_x = 160
+game_height = 320
+game_width = 440
+mid_x = 220
 word_width = 15
 word_height = 15
 x_change = 20
@@ -26,23 +26,25 @@ x_change = 20
 class Ship(pygame.sprite.Sprite):
     
     def __init__(self):
-        super.__init__()
+        super().__init__()
         
-        self.image = pygame.image.load('heart.png')
+        #self.image = pygame.image.load('heart.png')
+        self.image = pygame.Surface([20,25])
+        self.image.fill(WHITE)
+        
         self.rect = self.image.get_rect()
-        
         self.rect.x = mid_x
         self.rect.y = game_height - 20
         
         
 class Word(pygame.sprite.Sprite):
     
-    def __init__(self,word):
-        super.__init__()
+    def __init__(self):
+        super().__init__()
         self.x = randint(20,game_width - 20)
-        self.y = randint(20,game_height - 20)
+        self.y = 15
         self.font = pygame.font.Font(None,25)
-        self.word = word
+        self.word = word_list[randint(0,len(word_list)-1)]
         self.color = GREEN
         self.reRender()
         
@@ -96,19 +98,22 @@ class Score(pygame.sprite.Sprite):
     
         
 def collision_word(bullet,word):
-    if abs(bullet.x - word.x):
-        pass
+    if abs(bullet.x - word.x) < 10:
+        if abs(bullet.y - word.y) < 5:
+            word.image.fill(BLACK)
+            allspriteslist.remove(word)
+            score.add(1)
         
 def collision_ship(ship):
-    if ship.x > game_width - 10:
-        ship.x = ship.x % (game_width -10)
-    if ship.x < 10:
-        ship.x = ship.x + game_width
+    if ship.rect.x > game_width - 10:
+        ship.rect.x = ship.rect.x % (game_width -10)
+    if ship.rect.x < 10:
+        ship.rect.x = ship.rect.x + game_width
         
     
 pygame.init()
 
-pygame.display.set_mode([game_width,game_height])
+screen = pygame.display.set_mode([game_width,game_height])
 
 pygame.display.set_caption('Dylans Bad Day')
 
@@ -119,7 +124,11 @@ allspriteslist.add(ship)
 
 clock = pygame.time.Clock()
 done = False
-score = Score(30,30) 
+score = Score((30,30))
+allspriteslist.add(score)
+
+word = Word()
+allsprietslist.add(word)
 
              
 while not done:
@@ -136,12 +145,16 @@ while not done:
             if event.key == pygame.K_ESCAPE:
                 done = True
         collision_ship(ship)
-        collision_word(bullet,word)
+        for sprite in allspriteslist:
+            if type(sprite) == Bullet:        
+                collision_word(bullet,word)
+                
+        word.y = word.y + 10
         
         screen.fill(BLACK)
         allspriteslist.draw(screen)
         pygame.display.flip()
-        clock.tick(10)
+        clock.tick(5)
         
 pygame.quit()
                 
