@@ -54,6 +54,10 @@ class Word(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.xy
         
+    def update(self):
+        self.y = self.y + 10
+        pass
+        
 class Bullet(pygame.sprite.Sprite):
     
     def __init__(self,Ship):
@@ -67,6 +71,9 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
+        
+    def update(self):
+        self.rect.y = self.rect.y - 10
         
         
 class Score(pygame.sprite.Sprite):
@@ -147,10 +154,12 @@ while not done:
                 done = True
         collision_ship(ship)
         for sprite in allspriteslist:
-            if type(sprite) == Bullet:        
+            if type(sprite) == Bullet:
+                bullet.update()
                 collision_word(bullet,word)
                 
-        word.y = word.y + 10
+        word.update()
+        
         
         screen.fill(BLACK)
         allspriteslist.draw(screen)
