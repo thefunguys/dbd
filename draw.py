@@ -4,7 +4,9 @@ pygame.init()
 update_rects = []
 screen = pygame.display.set_mode((640, 480), pygame.DOUBLEBUF | pygame.HWSURFACE)
 
-background = pygame.Surface(screen.get_size()).convert()
+border = pygame.Surface(screen.get_size()).convert()
+bgrect = screen.get_size()
+background = pygame.Surface((bgrect[0] - 6, bgrect[1] - 6)).convert()
 bg_color = (80, 100, 150)
 background.fill(bg_color)
 screen.blit(background, (0, 0))
@@ -23,13 +25,14 @@ def draw_surf(surface, loc, target=screen):
     target.blit(surface, loc)
 
 def update():
-    pygame.display.update(update_rects)
+    pygame.display.update()
     del update_rects[:]
 
 def draw_bg(surface=screen, bg_color=bg_color):
     if bg_color != background.get_at((0, 0)):
         background.fill(bg_color)
-    surface.blit(background, (0, 0))
+    surface.blit(border, (0, 0))
+    surface.blit(background, (3, 3))
 
 def write(text, surface=screen):
     drawText(surface, text, (0, 0, 0), pygame.Rect(80, 370, 480, 100), font)

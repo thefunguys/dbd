@@ -94,17 +94,20 @@ def fear(x=300):
     enemies.append(fearo)
 
 
-disp = pygame.Surface((320, 240))
-player = PlatformPlayer()
-
-platformscene = scene.Scene(disp)
-platformscene.add(player)
-
+platformscene = None
+player = None
 
 def start():
+    global platformscene, player
+    disp = pygame.Surface((320, 240))
+    player = PlatformPlayer()
+
+    platformscene = scene.Scene(disp)
+    platformscene.add(player)
+    del enemies[:]
     for i in range(20):
         angst(450 + 300 * i)
     for i in range(20):
         fear(300 + 300 * i)
 
-platformscene.bg_color = (200, 200, 200)
+    platformscene.bg_color = (200, 200, 200)

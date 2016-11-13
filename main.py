@@ -29,10 +29,10 @@ prog = 0.0
 def next_scene():
     global curscene
     curscene += 1
-    if scenes[curscene] == lunchscene:
-        platformer.start()
     if curscene >= len(scenes):
         curscene = 0
+    if scenes[curscene] == lunchscene:
+        platformer.start()
 
 def current_scene():
     return scenes[curscene]
@@ -59,15 +59,15 @@ while running:
     prog += dt / 10000.0
     if prog > 1.1:
         prog = 0
-    prog = platformer.player.x / 280.0
-    current_scene().set_progress(prog)
 
     current_scene().update(dt)
     current_scene().draw()
     if current_scene() == lunchscene:
+        prog = platformer.player.x / 280.0
         platformer.platformscene.update(dt)
         platformer.platformscene.draw()
         draw.draw_surf(platformer.platformscene.rendertarget, (0, 64))
+    current_scene().set_progress(prog)
     draw.draw(textbox)
     text.draw_text(text.texts)
     draw.update()
