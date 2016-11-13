@@ -1,4 +1,4 @@
-import pygame, draw, gameobject, scene, events, text, walker, platformer, snake, threading
+import pygame, draw, gameobject, scene, events, text, walker, platformer, snake, threading, space
 from pygame.locals import *
 
 pygame.init()
@@ -50,11 +50,11 @@ def next_scene():
     curscene += 1
     state(1)
     print(state(), curscene)
+    text.texts = []
+    text.curtext = 0
     if curscene >= len(scenes):
         curscene = 0
     if scenes[curscene] == lunchscene:
-        text.texts = []
-        text.curtext = 0
         text.add_text("Look! Heather already got a table! You should sit with her", text.USER)
         text.add_text("It's okay. Take your time. Social interactions can be scary. But if you overcome some of your own fears and anxieties, you'll have a great time!", text.EVENT)
         text.add_text("Great job Dylan! You are really making progress. Heather is happy to see you, and you have a great lunch!")
@@ -62,15 +62,13 @@ def next_scene():
         text.add_text("Your essay is a one-page report on the importance of traffic lights. Good luck!")
         text.add_text('')
     if scenes[curscene] == essayscene:
-        text.texts = []
-        text.curtext = 0
         text.add_text("Oh no! Looks like you're having a hard time there. Don't worry. Take your time. Breathe. Just take it one word at a time.", text.EVENT)
-        text.add_text("You did it! You did a great job. I bet you'll get an A+")
+        text.add_text("You did it! You did a great job. I bet you'll get an A+.")
         text.add_text('')
     if scenes[curscene] == bedscene:
         text.add_text("Wow! You made it through the day. You are amazing!")
         text.add_text("I know today was hard, but don't worry. Tomorrow will be easier. Just remember to take it one day, one step, one word at a time.")
-        text.add_text("You are going to be okay")
+        text.add_text("You are going to be okay.")
         
 
 
@@ -86,7 +84,8 @@ def zero_prog():
 running = True
 while running:
     pressed = list(pygame.key.get_pressed())
-    for event in pygame.event.get():
+    evs = pygame.event.get()
+    for event in evs:
         if event.type == QUIT or pressed[K_ESCAPE]:
             running = False
         if event.type == KEYDOWN:
@@ -110,6 +109,9 @@ while running:
                 elif state() == 6 and current_scene() == lunchscene:
                     prog = 0.0
                     next_scene()
+                elif state() == 3 and current_scene() == essayscene:
+                    next_scene()
+                    state(8)
                 next_state()
 
 
@@ -130,6 +132,12 @@ while running:
         snake.update(dt, pressed)
         draw.draw_surf(snake.screen, (10, 64))
         prog = snake.score.score / 20.0
+        if prog >= 1.0 or pressed[K_d]:
+            text.event_text()
+    if state() == 2 and current_scene() == essayscene:
+        space.update(evs)
+        draw.draw_surf(space.screen, (10, 64))
+        prog = space.score.score / 50.0
         if prog >= 1.0 or pressed[K_d]:
             text.event_text()
     current_scene().set_progress(prog)
