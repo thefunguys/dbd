@@ -129,7 +129,7 @@ score = Score((30,30))
 allspriteslist.add(score)
 
 word = Word()
-allsprietslist.add(word)
+allspriteslist.add(word)
 
              
 while not done:
