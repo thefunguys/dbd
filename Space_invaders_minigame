@@ -55,7 +55,7 @@ class Word(pygame.sprite.Sprite):
         self.rect.center = self.xy
         
     def update(self):
-        self.rect.y = self.rect.y + 10
+        self.rect.y = self.rect.y + 5
         pass
         
 class Bullet(pygame.sprite.Sprite):
@@ -110,6 +110,14 @@ def collision_word(bullet,word):
         word.image.fill(BLACK)
         allspriteslist.remove(word)
         score.add(1)
+        word = Word()
+        allspriteslist.add(word)
+        
+def collision_word_wall(word):
+    if word.rect.y > game_height -10:
+        ship.rect.y = ship.rect.y % (game_height - 10)
+    if ship.rect.y < 10:
+        ship.rect.y = ship.rect.y + game_height
         
 def collision_ship(ship):
     if ship.rect.x > game_width - 10:
@@ -159,6 +167,7 @@ while not done:
             collision_word(bullet,word)
                 
     word.update()
+    collision_word_wall(word)
         
         
     allspriteslist.draw(screen)
