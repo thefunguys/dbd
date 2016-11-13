@@ -2,7 +2,7 @@ import pygame
 
 pygame.init()
 update_rects = []
-screen = pygame.display.set_mode((640, 480), pygame.DOUBLEBUF | pygame.HWSURFACE)
+screen = pygame.display.set_mode((640, 480), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.HWSURFACE)
 
 border = pygame.Surface(screen.get_size()).convert()
 bgrect = screen.get_size()
@@ -12,7 +12,7 @@ background.fill(bg_color)
 screen.blit(background, (0, 0))
 pygame.display.update()
 
-font = pygame.font.Font('assets/dejavu.ttf', 20)
+font = pygame.font.Font('assets/dejavu.ttf', 18)
 print(font.size('hello'))
 
 
