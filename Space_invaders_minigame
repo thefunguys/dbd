@@ -115,9 +115,9 @@ def collision_word(bullet,word):
         
 def collision_word_wall(word):
     if word.rect.y > game_height -10:
-        ship.rect.y = ship.rect.y % (game_height - 10)
-    if ship.rect.y < 10:
-        ship.rect.y = ship.rect.y + game_height
+        allspriteslist.remove(word)
+        word = Word()
+        allspriteslist.add(word)
         
 def collision_ship(ship):
     if ship.rect.x > game_width - 10:
