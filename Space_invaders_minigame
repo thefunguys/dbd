@@ -57,7 +57,7 @@ class Word(pygame.sprite.Sprite):
 class Bullet(pygame.sprite.Sprite):
     
     def __init__(self,Ship):
-        super.__init__(self)
+        super().__init__()
         self.x = Ship.x
         self.y = Ship.y
         
