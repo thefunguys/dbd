@@ -39,12 +39,12 @@ class Ship(pygame.sprite.Sprite):
         
 class Word(pygame.sprite.Sprite):
     
-    def __init__(self,word):
+    def __init__(self):
         super().__init__()
         self.x = randint(20,game_width - 20)
-        self.y = randint(20,game_height - 20)
+        self.y = 15
         self.font = pygame.font.Font(None,25)
-        self.word = word
+        self.word = word_list[random.randint(0,len(word_list)-1)]
         self.color = GREEN
         self.reRender()
         
@@ -124,7 +124,9 @@ allspriteslist.add(ship)
 clock = pygame.time.Clock()
 done = False
 score = Score((30,30))
-allspriteslist.add(score) 
+allspriteslist.add(score)
+
+ 
 
              
 while not done:
@@ -144,6 +146,8 @@ while not done:
         for sprite in allspriteslist:
             if type(sprite) == Bullet:        
                 collision_word(bullet,word)
+                
+        word.y = word.y + 10
         
         screen.fill(BLACK)
         allspriteslist.draw(screen)
