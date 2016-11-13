@@ -4,7 +4,7 @@ from pygame.locals import *
 enemies = []
 
 def halfrect(rect):
-    rect.x += 0.25 * rect.w
+    rect.x += 0.33 * rect.w
     rect.w /= 3
     rect.y += 0.25 * rect.h
     rect.h /= 2

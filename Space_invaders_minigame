@@ -105,19 +105,19 @@ class Score(pygame.sprite.Sprite):
             
     
         
-def collision_word(bullet,word):
-    if bullet.rect.colliderect(word.rect):
-        word.image.fill(BLACK)
-        allspriteslist.remove(word)
+def collision_word(bullet,sword):
+    global word
+    if bullet.rect.colliderect(sword.rect):
+        sword.image.fill(BLACK)
+        allspriteslist.remove(sword)
+        sword.rect.x = 10000
         score.add(1)
         word = Word()
         allspriteslist.add(word)
         
 def collision_word_wall(word):
     if word.rect.y > game_height -10:
-        allspriteslist.remove(word)
-        word = Word()
-        allspriteslist.add(word)
+        word.rect.y = 0
         
 def collision_ship(ship):
     if ship.rect.x > game_width - 10:

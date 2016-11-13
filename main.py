@@ -104,6 +104,7 @@ while running:
                     threading.Timer(3.0, zero_prog).start()
                 elif state() == 6 and current_scene() == bedscene:
                     next_scene()
+                    prog = 0.0
                 elif state() == 1 and current_scene() == lunchscene:
                     platformer.start()
                 elif state() == 6 and current_scene() == lunchscene:
