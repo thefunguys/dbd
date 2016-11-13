@@ -177,14 +177,14 @@ while not done:
                     x_change = (speed * segment_width + segment_margin) * -1
                     direction = 2
                 else:
-                    x_change = 0
+                    x_change = (speed * segment_width + segment_margin)
                 y_change = 0
             if event.key == pygame.K_RIGHT:
                 if direction != 2:
                     x_change = (speed * segment_width + segment_margin)
                     direction = 0
                 else:
-                    x_change = 0
+                    x_change = (speed * segment_width + segment_margin) * -1
                 y_change = 0
             if event.key == pygame.K_UP:
                 x_change = 0
@@ -192,14 +192,14 @@ while not done:
                     y_change = (speed * segment_height + segment_margin) * -1
                     direction = 3
                 else:
-                    y_change = 0
+                    y_change = (speed * segment_width + segment_margin)
             if event.key == pygame.K_DOWN:
                 x_change = 0
                 if direction != 3:
                     y_change = (speed * segment_height + segment_margin)
                     direction = 1
                 else:
-                    y_change = 0
+                    y_change = (speed * segment_width + segment_margin) * -1
             if event.key == pygame.K_ESCAPE:
                 done = True
     collision(snake_segments,score)
