@@ -102,6 +102,7 @@ def collision_word(bullet,word):
         if abs(bullet.y - word.y) < 5:
             word.image.fill(BLACK)
             allspriteslist.remove(word)
+            score.add(1)
         
 def collision_ship(ship):
     if ship.rect.x > game_width - 10:
@@ -126,7 +127,8 @@ done = False
 score = Score((30,30))
 allspriteslist.add(score)
 
- 
+word = Word()
+allsprietslist.add(word)
 
              
 while not done:
