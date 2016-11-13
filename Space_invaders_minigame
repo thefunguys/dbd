@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Nov 12 19:58:31 2016
+
+@author: William Cox
+"""
+
+import pygame
+from pygame.locals import *
+from random import randint
+
+#---GLOBALS---#
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255,0,0)
+GREEN = (0,255,0)
+word_list = ['the','and','red','green','yellow','stop','go','slow']
+game_height = 440
+game_width = 320
+mid_x = 160
+word_width = 15
+word_height = 15
+x_change = 20
+
+class Ship(pygame.sprite.Sprite):
+    
+    def __init__(self):
+        super.__init__()
+        
+        self.image = pygame.image.load('heart.png')
+        self.rect = self.image.get_rect()
+        
+        self.rect.x = mid_x
+        self.rect.y = 10
+        
+        
+class Word(pygame.sprite.Sprite):
+    
+    def __init__(self,word):
+        super.__init__()
+        self.x = randint(20,game_width - 20)
+        self.y = randint(20,game_height - 20)
+        self.font = pygame.font.Font(None,25)
+        self.word = word
+        self.color = GREEN
+        self.reRender()
+        
+    def reRender(self):
+        self.image = self.font.render(self.word, True, self.color)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.xy
+        
+class Bullet(pygame.sprite.Sprite):
+    
+    def __init__(self,Ship):
+        super.__init__(self)
+        self.x = Ship.x
+        self.y = Ship.y
+        
+        self.image = pygame.Surface([5,15])
+        self.image.fill(RED)
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+        
+        
+class Score(pygame.sprite.Sprite):
+    """sprite for score"""
+
+    def __init__(self,xy):
+        pygame.sprite.Sprite.__init__(self)
+        self.xy = xy
+        self.font = pygame.font.Font(None,50)
+        self.color = (255,165,0)
+        self.score = 0
+        self.reRender()       
+    
+    def add(self,points):
+        self.score += points
+        self.reRender()
+        
+    def reset(self):
+        self.score = 0
+        self.reRender()
+        
+    def reRender(self):
+        self.image = self.font.render("%d" %(self.score), True, self.color)
+        self.rect = self.image.get_rect()
+        self.rect.center = self.xy        
+        
+        
+        
+            
+    
+        
+def collision_word(ship,word):
+    if abs(Bullet.x - Word.x):
+        pass
+        
+def collision_ship(ship):
+    if ship.x > game_width - 10:
+        ship.x = ship.x % (game_width -10)
+    if ship.x < 10:
+        ship.x = ship.x + game_width
+        
+    
+              
+while not done:
+    
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                ship.x = ship.x - x_change
+            if event.key == pygame.K_RIGHT:
+                ship.x = ship.x + x_change
+            if event.key == pygame.K_UP:
+                bullet = Bullet(ship)
+            if event.key == pygame.K_ESCAPE:
+                done = True
+                
+                
+                
+    
