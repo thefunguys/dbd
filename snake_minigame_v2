@@ -155,6 +155,8 @@ for i in range(2):
 
 neuro = neuro()
 allspriteslist.add(neuro)
+score = Score((100,30))
+allspriteslist.add(score)
  
  
 clock = pygame.time.Clock()
@@ -164,7 +166,6 @@ while not done:
  
     for event in pygame.event.get():
         speed = 1
-        score = Score((100,30))
         
  
         # Set the speed based on the key pressed
@@ -217,7 +218,6 @@ while not done:
     # Insert new segment into the list
     snake_segments.insert(0, segment)
     allspriteslist.add(segment)
-    allspriteslist.add(score)
     
     
  
