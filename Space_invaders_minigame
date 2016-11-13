@@ -74,6 +74,7 @@ class Bullet(pygame.sprite.Sprite):
         
     def update(self):
         self.rect.y = self.rect.y - 10
+        pass
         
         
 class Score(pygame.sprite.Sprite):
@@ -152,19 +153,19 @@ while not done:
                 allspriteslist.add(bullet)
             if event.key == pygame.K_ESCAPE:
                 done = True
-        collision_ship(ship)
-        for sprite in allspriteslist:
-            if type(sprite) == Bullet:
-                bullet.update()
-                collision_word(bullet,word)
+    collision_ship(ship)
+    for sprite in allspriteslist:
+        if type(sprite) == Bullet:
+            bullet.update()
+            collision_word(bullet,word)
                 
-        word.update()
+    word.update()
         
         
-        screen.fill(BLACK)
-        allspriteslist.draw(screen)
-        pygame.display.flip()
-        clock.tick(5)
+    screen.fill(BLACK)
+    allspriteslist.draw(screen)
+    pygame.display.flip()
+    clock.tick(5)
         
 pygame.quit()
                 
