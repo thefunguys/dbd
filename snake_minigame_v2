@@ -8,7 +8,7 @@ Created on Sat Nov 12 11:08:27 2016
 import pygame
 from random import randint
 import numpy as np
-import os,sys
+
 
  
 # --- Globals ---
@@ -29,6 +29,7 @@ segment_margin = 3
 # Set initial speed
 x_change = (segment_width + segment_margin)
 y_change = 0
+direction = 0 #right
 
  
  
@@ -172,24 +173,32 @@ while not done:
         # segment, plus the margin.
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                x_change = (speed * segment_width + segment_margin) * -1
-                y_change = 0
-                if abs(snake_segments[1].rect.x - snake_segments[0].rect.x + x_change) < 3:
+                if direction != 0:
+                    x_change = (speed * segment_width + segment_margin) * -1
+                    direction = 2
+                else:
                     x_change = 0
+                y_change = 0
             if event.key == pygame.K_RIGHT:
-                x_change = (speed * segment_width + segment_margin)
-                y_change = 0
-                if abs(snake_segments[1].rect.x - snake_segments[0].rect.x + x_change) < 3:
+                if direction != 2:
+                    x_change = (speed * segment_width + segment_margin)
+                    direction = 0
+                else:
                     x_change = 0
+                y_change = 0
             if event.key == pygame.K_UP:
                 x_change = 0
-                y_change = (speed * segment_height + segment_margin) * -1
-                if abs(snake_segments[1].rect.y - snake_segments[0].rect.y + y_change) < 3:
+                if direction != 1:
+                    y_change = (speed * segment_height + segment_margin) * -1
+                    direction = 3
+                else:
                     y_change = 0
             if event.key == pygame.K_DOWN:
                 x_change = 0
-                y_change = (speed * segment_height + segment_margin)
-                if abs(snake_segments[1].rect.y - snake_segments[0].rect.y + y_change) < 3:
+                if direction != 3:
+                    y_change = (speed * segment_height + segment_margin)
+                    direction = 1
+                else:
                     y_change = 0
             if event.key == pygame.K_ESCAPE:
                 done = True
