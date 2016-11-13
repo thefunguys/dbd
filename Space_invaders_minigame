@@ -137,9 +137,9 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
-                ship.x = ship.x - x_change
+                ship.rect.x = ship.rect.x - x_change
             if event.key == pygame.K_RIGHT:
-                ship.x = ship.x + x_change
+                ship.rect.x = ship.rect.x + x_change
             if event.key == pygame.K_UP:
                 bullet = Bullet(ship)
                 allspriteslist.add(bullet)
